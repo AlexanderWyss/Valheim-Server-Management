@@ -48,10 +48,14 @@ export class AppService {
 
   getLogs(): Promise<string> {
     return this.container.logs({
-      timestamps: true,
       tail: 200,
       stdout: true,
       stderr: true,
-    }).then(value => (value as any as Buffer).toString('utf8'));
+    }).then(value => this.parseLog(value as any as Buffer));
+  }
+
+  private parseLog(buffer: Buffer): string {
+    console.log(buffer)
+    return null;
   }
 }
