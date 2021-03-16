@@ -23,7 +23,7 @@ export class AppController {
   }
 
   @Get('logs')
-  getLogs(): Promise<any> {
+  getLogs(): Promise<string> {
     return this.appService.getLogs();
   }
 }

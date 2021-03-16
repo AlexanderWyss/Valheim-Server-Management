@@ -46,7 +46,16 @@ export class AppService {
     });
   }
 
-  getLogs(): Promise<any> {
-    return this.container.logs({timestamps: true, tail: 200, stdout: true, stderr: true})
+  getLogs(): Promise<string> {
+    return this.container.logs({ timestamps: true, tail: 200, stdout: true, stderr: true }).then(this.streamToString);
+  }
+
+  private streamToString(stream: NodeJS.ReadableStream): Promise<string> {
+    const chunks = [];
+    return new Promise((resolve, reject) => {
+      stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+      stream.on('error', (err) => reject(err));
+      stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    });
   }
 }
