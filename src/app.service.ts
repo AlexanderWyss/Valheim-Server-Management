@@ -3,6 +3,7 @@ import * as Docker from 'dockerode';
 import { Container } from 'dockerode';
 import { Status } from './_models/Status';
 import { AppException } from './AppException';
+import { of } from 'rxjs';
 
 @Injectable()
 export class AppService {
@@ -46,7 +47,7 @@ export class AppService {
     });
   }
 
-  getLogs(): Promise<Buffer> {
+  getLogs(): Promise<string> {
     return this.container.logs({
       tail: 200,
       stdout: true,
@@ -54,8 +55,19 @@ export class AppService {
     }).then(value => this.parseLog(value as any as Buffer));
   }
 
-  private parseLog(buffer: Buffer): Buffer {
-    console.log(buffer)
-    return buffer;
+  private parseLog(buffer: Buffer): string {
+    let log = '';
+    let offset = 0;
+    while (offset < buffer.length) {
+      if (buffer.readInt8(offset) == 2) {
+        log = log + 'ERROR: ';
+      }
+      const length = buffer.readUInt32BE(offset + 4);
+      const headerOffset = offset + 8;
+      const end = headerOffset + length;
+      log = log + buffer.toString('utf-8', headerOffset, end)
+      offset = end;
+    }
+    return log;
   }
 }
