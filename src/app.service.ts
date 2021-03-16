@@ -46,7 +46,7 @@ export class AppService {
     });
   }
 
-  getLogs(): Promise<string> {
+  getLogs(): Promise<Buffer> {
     return this.container.logs({
       tail: 200,
       stdout: true,
@@ -54,8 +54,8 @@ export class AppService {
     }).then(value => this.parseLog(value as any as Buffer));
   }
 
-  private parseLog(buffer: Buffer): string {
+  private parseLog(buffer: Buffer): Buffer {
     console.log(buffer)
-    return null;
+    return buffer;
   }
 }
