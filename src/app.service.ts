@@ -52,6 +52,8 @@ export class AppService {
 
   private streamToString(stream: NodeJS.ReadableStream): Promise<string> {
     const chunks = [];
+    console.log(stream);
+    console.log(typeof stream)
     return new Promise((resolve, reject) => {
       stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
       stream.on('error', (err) => reject(err));
