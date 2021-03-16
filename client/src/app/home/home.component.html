@@ -1,0 +1,9 @@
+<div><input type='button' value='Refresh' (click)='loadStatus()'></div>
+<div *ngIf='status'>{{status}}</div>
+<div><input type='button' value='Refresh' (click)='loadLogs()'></div>
+<div *ngIf='log'>{{log}}</div>
+<div>
+  <input type='button' value='Start' (click)='start()'>
+  <input type='button' value='Stop' (click)='stop()'>
+</div>
+<div>{{error}}</div>

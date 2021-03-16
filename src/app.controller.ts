@@ -12,12 +12,12 @@ export class AppController {
     return this.appService.getStatus();
   }
 
-  @Get('start')
+  @Post('start')
   start(): Promise<void> {
     return this.appService.start();
   }
 
-  @Get('stop')
+  @Post('stop')
   stop(): Promise<void> {
     return this.appService.stop();
   }
