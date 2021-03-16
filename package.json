@@ -1,5 +1,5 @@
 {
-  "name": "Web-Starter",
+  "name": "valheim-server-management",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -27,6 +27,8 @@
     "@nestjs/platform-socket.io": "^7.6.4",
     "@nestjs/serve-static": "^2.1.4",
     "@nestjs/websockets": "^7.6.4",
+    "@types/dockerode": "^3.2.2",
+    "dockerode": "^3.2.1",
     "dotenv": "^8.2.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

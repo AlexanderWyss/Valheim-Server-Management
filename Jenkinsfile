@@ -19,6 +19,6 @@ node {
         }
     }
     stage('Build Docker image') {
-        docker.build("alexanderwyss/web-starter")
+        docker.build("alexanderwyss/valheim-server-management")
     }
 }
