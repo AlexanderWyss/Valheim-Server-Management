@@ -21,30 +21,46 @@ export class HomeComponent implements OnInit {
   }
 
   loadStatus(): void {
-    this.client.getStatus().subscribe(status => this.status = JSON.stringify(status, null, 4), err => this.handleError(err));
+    this.client.getStatus().subscribe(status => this.status = this.processText(JSON.stringify(status, null, 4)),
+      err => this.handleError(err));
   }
 
   loadLogs(): void {
-    this.client.getLogs().subscribe(log => this.log = log, err => this.handleError(err));
+    this.client.getLogs().subscribe(log => this.log = this.processText(log), err => this.handleError(err));
+  }
+
+  private processText(text: string): string {
+    return text.replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/'/g, '&apos;')
+      .replace('\n', '<br>');
   }
 
   start(): void {
     this.loading = true;
     this.client.start().subscribe(() => {
-      this.loading = false;
+      this.loadingDone();
     }, err => {
       this.handleError(err);
-      this.loading = false;
+      this.loadingDone();
     });
+  }
+
+  private loadingDone() {
+    this.loading = false;
+    this.loadStatus();
+    this.loadLogs();
   }
 
   stop(): void {
     this.loading = true;
     this.client.stop().subscribe(() => {
-      this.loading = false;
+      this.loadingDone();
     }, err => {
       this.handleError(err);
-      this.loading = false;
+      this.loadingDone();
     });
   }
 
@@ -55,5 +71,6 @@ export class HomeComponent implements OnInit {
     } else {
       this.error = error;
     }
+    this.error = Date.now().toLocaleString() + ' ' + this.error;
   }
 }
