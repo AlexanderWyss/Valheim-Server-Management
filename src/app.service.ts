@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as Docker from 'dockerode';
 import { Container } from 'dockerode';
 import { Status } from './_models/Status';
+import { AppException } from './AppException';
 
 @Injectable()
 export class AppService {
@@ -32,7 +33,7 @@ export class AppService {
       if (!status.runningOrRestarting) {
         return this.container.start();
       }
-      return Promise.reject('Already running');
+      return Promise.reject(new AppException('Already running'));
     });
   }
 
@@ -41,7 +42,7 @@ export class AppService {
       if (status.runningOrRestarting) {
         return this.container.stop();
       }
-      return Promise.reject('Not running');
+      return Promise.reject(new AppException('Not running'));
     });
   }
 
