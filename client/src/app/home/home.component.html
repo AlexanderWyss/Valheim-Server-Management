@@ -3,7 +3,8 @@
 <div><input type='button' value='Refresh' (click)='loadLogs()'></div>
 <div *ngIf='log'>{{log}}</div>
 <div>
-  <input type='button' value='Start' (click)='start()'>
-  <input type='button' value='Stop' (click)='stop()'>
+  <input type='button' value='Start' (click)='start()' [disabled]='loading'>
+  <input type='button' value='Stop' (click)='stop()' [disabled]='loading'>
 </div>
 <div>{{error}}</div>
+<div *ngIf='loading'>In Progress...</div>

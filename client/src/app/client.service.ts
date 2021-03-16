@@ -26,7 +26,7 @@ export class ClientService {
     return this.http.post(this.URL + '/stop', null);
   }
 
-  getLogs(): Observable<any> {
-    return this.http.get(this.URL + '/logs');
+  getLogs(): Observable<string> {
+    return this.http.get(this.URL + '/logs') as Observable<string>;
   }
 }

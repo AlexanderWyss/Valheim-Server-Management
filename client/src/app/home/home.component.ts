@@ -4,12 +4,13 @@ import { ClientService } from '../client.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
   status: string;
   log: string;
   error: string;
+  loading: boolean;
 
   constructor(private client: ClientService) {
   }
@@ -24,22 +25,29 @@ export class HomeComponent implements OnInit {
   }
 
   loadLogs(): void {
-    this.client.getLogs().subscribe(log => this.log = log, this.handleError);
+    this.client.getLogs().subscribe(log => {
+      console.log(log)
+      this.log = log;
+    }, this.handleError);
   }
 
   start(): void {
+    this.loading = true;
     this.client.start().subscribe(() => {
-      return;
+      this.loading = false;
     }, this.handleError);
   }
 
   stop(): void {
+    this.loading = true;
     this.client.stop().subscribe(() => {
-      return;
+      this.loading = false;
     }, this.handleError);
   }
 
   private handleError(error: string) {
+    console.error(error);
     this.error = error;
+    this.loading = false;
   }
 }
