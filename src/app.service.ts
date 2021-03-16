@@ -65,7 +65,7 @@ export class AppService {
       const length = buffer.readUInt32BE(offset + 4);
       const headerOffset = offset + 8;
       const end = headerOffset + length;
-      log = log + buffer.toString('utf-8', headerOffset, end)
+      log = log + buffer.toString('utf-8', headerOffset, end) + '\n';
       offset = end;
     }
     return log.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
