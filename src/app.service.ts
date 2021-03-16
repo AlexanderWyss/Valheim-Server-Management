@@ -68,6 +68,6 @@ export class AppService {
       log = log + buffer.toString('utf-8', headerOffset, end)
       offset = end;
     }
-    return log;
+    return log.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
   }
 }
