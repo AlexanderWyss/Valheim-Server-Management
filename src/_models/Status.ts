@@ -3,4 +3,6 @@ export interface Status {
   exitCode: number;
   error: string;
   startedAt: string;
+  finishedAt: string;
+  runningOrRestarting: boolean;
 }

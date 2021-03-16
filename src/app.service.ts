@@ -6,9 +6,11 @@ import { Status } from './_models/Status';
 @Injectable()
 export class AppService {
   private docker: Docker;
+  private container: Container;
 
   constructor() {
     this.docker = new Docker({ socketPath: '/var/run/docker.sock' });
+    this.container = this.docker.getContainer('web-starter');
   }
 
   getStatus(): Promise<Status> {
@@ -18,12 +20,32 @@ export class AppService {
         status: state.Status,
         exitCode: state.ExitCode,
         error: state.Error,
-        startedAt: state.StartedAt
+        startedAt: state.StartedAt,
+        finishedAt: state.FinishedAt,
+        runningOrRestarting: state.Running || state.Restarting,
       };
     });
   }
 
-  private get container(): Container {
-    return this.docker.getContainer('web-starter');
+  start(): Promise<void> {
+    return this.getStatus().then(status => {
+      if (!status.runningOrRestarting) {
+        return this.container.start();
+      }
+      return Promise.reject('Already running');
+    });
+  }
+
+  stop(): Promise<void> {
+    return this.getStatus().then(status => {
+      if (status.runningOrRestarting) {
+        return this.container.stop();
+      }
+      return Promise.reject('Not running');
+    });
+  }
+
+  getLogs(): Promise<any> {
+    return this.container.logs()
   }
 }
