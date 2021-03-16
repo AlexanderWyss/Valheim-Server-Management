@@ -27,6 +27,6 @@ export class ClientService {
   }
 
   getLogs(): Observable<string> {
-    return this.http.get<string>(this.URL + '/logs');
+    return this.http.get(this.URL + '/logs', { responseType: 'text' });
   }
 }

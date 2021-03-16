@@ -48,8 +48,12 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  private handleError(error: string) {
+  private handleError(error: any) {
     console.error(error);
-    this.error = error;
+    if (error.error && error.error.message) {
+      this.error = error.error.message;
+    } else {
+      this.error = error;
+    }
   }
 }
