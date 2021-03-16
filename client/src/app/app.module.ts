@@ -11,7 +11,7 @@ export function getUrl(): string {
   if (environment.production) {
     return window.location.hostname + ':' + window.location.port;
   } else {
-    return "localhost:3000";
+    return 'localhost:3000';
   }
 }
 
