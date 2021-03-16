@@ -21,33 +21,35 @@ export class HomeComponent implements OnInit {
   }
 
   loadStatus(): void {
-    this.client.getStatus().subscribe(status => this.status = JSON.stringify(status), this.handleError);
+    this.client.getStatus().subscribe(status => this.status = JSON.stringify(status, null, 4), err => this.handleError(err));
   }
 
   loadLogs(): void {
-    this.client.getLogs().subscribe(log => {
-      console.log(log)
-      this.log = log;
-    }, this.handleError);
+    this.client.getLogs().subscribe(log => this.log = log, err => this.handleError(err));
   }
 
   start(): void {
     this.loading = true;
     this.client.start().subscribe(() => {
       this.loading = false;
-    }, this.handleError);
+    }, err => {
+      this.handleError(err);
+      this.loading = false;
+    });
   }
 
   stop(): void {
     this.loading = true;
     this.client.stop().subscribe(() => {
       this.loading = false;
-    }, this.handleError);
+    }, err => {
+      this.handleError(err);
+      this.loading = false;
+    });
   }
 
   private handleError(error: string) {
     console.error(error);
     this.error = error;
-    this.loading = false;
   }
 }
