@@ -47,6 +47,6 @@ export class AppService {
   }
 
   getLogs(): Promise<any> {
-    return this.container.logs()
+    return this.container.logs({timestamps: true, tail: 200, stdout: true, stderr: true})
   }
 }
