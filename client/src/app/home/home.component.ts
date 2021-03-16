@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/'/g, '&apos;')
-      .replace('\n', '<br>');
+      .replace(/\n/g, '<br>');
   }
 
   start(): void {
