@@ -71,6 +71,6 @@ export class HomeComponent implements OnInit {
     } else {
       this.error = error;
     }
-    this.error = Date.now().toLocaleString() + ' ' + this.error;
+    this.error = new Date().toLocaleString() + ' ' + this.error;
   }
 }

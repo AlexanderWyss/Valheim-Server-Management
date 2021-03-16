@@ -1,15 +1,15 @@
 <h2>Valheim Server</h2>
 <div class='border'>
-  <div><input type='button' value='Refresh' (click)='loadStatus()'></div>
-  <div *ngIf='status' [innerHTML]='status'></div>
-</div>
-<div class='border'>
-  <div><input type='button' value='Refresh' (click)='loadLogs()'></div>
-  <div *ngIf='log' [innerHTML]='log'></div>
-</div>
-<div class='border'>
   <input type='button' value='Start' (click)='start()' [disabled]='loading'>
   <input type='button' value='Stop' (click)='stop()' [disabled]='loading'>
   <div *ngIf='loading'>In Progress...</div>
 </div>
+<div class='border'>
+  <div><input type='button' value='Refresh' (click)='loadStatus()'></div>
+  <div *ngIf='status' [innerHTML]='status'></div>
+</div>
 <div class='error'>{{error}}</div>
+<div class='border'>
+  <div><input type='button' value='Refresh' (click)='loadLogs()'></div>
+  <div *ngIf='log' [innerHTML]='log'></div>
+</div>

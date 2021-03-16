@@ -3,7 +3,6 @@ import * as Docker from 'dockerode';
 import { Container } from 'dockerode';
 import { Status } from './_models/Status';
 import { AppException } from './AppException';
-import { of } from 'rxjs';
 
 @Injectable()
 export class AppService {
@@ -12,7 +11,7 @@ export class AppService {
 
   constructor() {
     this.docker = new Docker({ socketPath: '/var/run/docker.sock' });
-    this.container = this.docker.getContainer('web-starter');
+    this.container = this.docker.getContainer('valheim');
   }
 
   getStatus(): Promise<Status> {
@@ -65,7 +64,7 @@ export class AppService {
       const length = buffer.readUInt32BE(offset + 4);
       const headerOffset = offset + 8;
       const end = headerOffset + length;
-      log = log + buffer.toString('utf-8', headerOffset, end) + '\n';
+      log = log + buffer.toString('utf-8', headerOffset, end);
       offset = end;
     }
     return log.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
