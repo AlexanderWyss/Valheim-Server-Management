@@ -3,6 +3,7 @@ import * as Docker from 'dockerode';
 import { Container } from 'dockerode';
 import { Status } from './_models/Status';
 import { AppException } from './AppException';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class AppService {
@@ -68,5 +69,21 @@ export class AppService {
       offset = end;
     }
     return log.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+  }
+
+  subscribeLogs(): Observable<string> {
+    this.container.logs({
+      follow: true,
+      tail: 0,
+      stdout: true,
+      stderr: true
+    }).then(stream => {
+      console.log(stream);
+    });
+    return of();
+  }
+
+  subscribeStatus(): Observable<Status> {
+    return of();
   }
 }
