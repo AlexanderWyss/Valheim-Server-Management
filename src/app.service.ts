@@ -4,6 +4,7 @@ import { Container } from 'dockerode';
 import { Status } from './_models/Status';
 import { AppException } from './AppException';
 import { Observable, of } from 'rxjs';
+import { IncomingMessage } from 'http';
 
 @Injectable()
 export class AppService {
@@ -76,9 +77,16 @@ export class AppService {
       follow: true,
       tail: 0,
       stdout: true,
-      stderr: true
-    }).then(stream => {
-      console.log(stream);
+      stderr: true,
+    }).then((stream: IncomingMessage) => {
+      stream.on('data', data => {
+        console.log(data);
+        try {
+          console.log(this.parseLog(data));
+        } catch (e) {
+          console.error(e);
+        }
+      });
     });
     return of();
   }
