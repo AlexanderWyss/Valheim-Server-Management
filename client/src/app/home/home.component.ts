@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   error: string;
   loading: boolean;
 
-  constructor(private client: ClientService) {
+  constructor(private client: ClientService, private socket: WebSocket) {
   }
 
   ngOnInit(): void {
