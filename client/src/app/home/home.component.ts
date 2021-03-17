@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../client.service';
+import { WebsocketService } from '../websocket.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ export class HomeComponent implements OnInit {
   error: string;
   loading: boolean;
 
-  constructor(private client: ClientService, private socket: WebSocket) {
+  constructor(private client: ClientService, private socket: WebsocketService) {
   }
 
   ngOnInit(): void {
