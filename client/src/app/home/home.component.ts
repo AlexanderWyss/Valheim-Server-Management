@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   logDate: string;
   error: string;
   loading: boolean;
-  autoScroll: boolean;
+  autoScroll = true;
 
   constructor(private client: ClientService, private socket: WebsocketService) {
   }
