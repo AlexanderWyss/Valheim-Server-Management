@@ -8,8 +8,6 @@ import { WebsocketService } from '../websocket.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  @ViewChild('logDiv') private logDiv: ElementRef;
-
   status: string;
   log: string;
   error: string;
@@ -24,7 +22,6 @@ export class HomeComponent implements OnInit {
     this.socket.onLog().subscribe(log => {
       console.log(log);
       this.log = this.log + log;
-      this.scrollToBottom();
     });
   }
 
@@ -35,14 +32,6 @@ export class HomeComponent implements OnInit {
 
   loadLogs(): void {
     this.client.getLogs().subscribe(log => this.log = this.processText(log), err => this.handleError(err));
-  }
-
-  scrollToBottom(): void {
-    try {
-      this.logDiv.nativeElement.scrollTop = this.logDiv.nativeElement.scrollHeight;
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   private processText(text: string): string {

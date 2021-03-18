@@ -3,7 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WebsocketService {
 
@@ -11,12 +11,12 @@ export class WebsocketService {
     console.log('try connect');
     this.socket.on('connect', () => {
       console.log('connected');
-      this.socket.emit('log');
     });
     this.socket.connect();
   }
 
   public onLog(): Observable<string> {
+    this.socket.emit('log');
     return this.socket.fromEvent('log');
   }
 }
