@@ -16,8 +16,10 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleConnection(client: Client, ...args: any[]): any {
     this.clientIds.push(client.id);
+    console.log('handle conn');
     if (!this.logsSubscription) {
       this.logsSubscription = this.service.subscribeLogs().subscribe(value => this.server.emit('log', value));
+      console.log('create sub');
     }
     if (!this.statusSubscription) {
       this.statusSubscription = this.service.subscribeStatus().subscribe(value => this.server.emit('status', value));
@@ -25,11 +27,13 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleDisconnect(client: Client): any {
+    console.log('disc');
     const index = this.clientIds.indexOf(client.id);
     if (index !== -1) {
       this.clientIds.splice(index, 1);
     }
     if (this.clientIds.length === 0) {
+      console.log('unsub');
       this.logsSubscription.unsubscribe();
       this.logsSubscription = null;
       this.statusSubscription.unsubscribe();
