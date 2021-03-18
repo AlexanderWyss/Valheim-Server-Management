@@ -16,6 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const config: SocketIoConfig = {url: getUrl(), options: {}};
 
@@ -37,7 +38,8 @@ const config: SocketIoConfig = {url: getUrl(), options: {}};
     MatDividerModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

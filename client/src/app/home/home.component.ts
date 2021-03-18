@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ClientService } from '../client.service';
 import { WebsocketService } from '../websocket.service';
 import { Status } from '../_models/Status';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -14,12 +15,11 @@ export class HomeComponent implements OnInit {
   statusDate: string;
   log: string;
   logDate: string;
-  error: string;
   loading: boolean;
   autoScroll = true;
   dateFormat = 'dd.MM.yyyy HH:mm:ss.SSS';
 
-  constructor(private client: ClientService, private socket: WebsocketService) {
+  constructor(private client: ClientService, private socket: WebsocketService, private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -91,14 +91,16 @@ export class HomeComponent implements OnInit {
 
   private handleError(error: any) {
     console.error(error);
+    let message;
     if (error.error && error.error.message) {
-      this.error = error.error.message;
+      message = error.error.message;
     } else if (error.message) {
-      this.error = error.message;
+      message = error.message;
     } else {
-      this.error = error;
+      message = error;
     }
-    this.error = this.timestamp() + ': ' + this.error;
+    console.error(message);
+    this.snackBar.open(message, null, { duration: 5000, panelClass: ['mat-toolbar', 'mat-warn'] });
   }
 
   private timestamp() {
