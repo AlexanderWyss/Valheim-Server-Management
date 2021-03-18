@@ -6,7 +6,9 @@
       <button mat-stroked-button color='primary' (click)='start()' [disabled]='loading'>Start</button>
       <button mat-stroked-button color='warn' (click)='stop()' [disabled]='loading'>Stop</button>
     </div>
-      <div><mat-spinner *ngIf='loading' diameter='34'></mat-spinner></div>
+    <div>
+      <mat-spinner *ngIf='loading' diameter='34'></mat-spinner>
+    </div>
     <div class='error'>{{error}}</div>
   </div>
   <mat-divider></mat-divider>
@@ -17,7 +19,23 @@
       </button>
       <span class='timestamp'>{{statusDate}}</span>
     </div>
-    <div *ngIf='status' [innerHTML]='status'></div>
+    <div *ngIf='status' class='status-container'>
+      <div>
+        <div>Status</div><div>{{status.status}}</div>
+      </div>
+      <div>
+        <div>Exit code</div><div>{{status.exitCode}}</div>
+      </div>
+      <div>
+        <div>Error</div><div>{{status.error}}</div>
+      </div>
+      <div>
+        <div>Started at</div><div>{{status.startedAt | date:dateFormat}}</div>
+      </div>
+      <div>
+        <div>Stopped at</div><div>{{status.finishedAt | date:dateFormat}}</div>
+      </div>
+    </div>
   </div>
   <mat-divider></mat-divider>
   <div class='group'>

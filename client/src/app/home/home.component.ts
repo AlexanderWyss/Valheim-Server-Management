@@ -10,13 +10,14 @@ import { Status } from '../_models/Status';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('logContainer') private logContainer: ElementRef;
-  status: string;
+  status: Status;
   statusDate: string;
   log: string;
   logDate: string;
   error: string;
   loading: boolean;
   autoScroll = true;
+  dateFormat = 'dd.MM.yyyy HH:mm:ss.SSS';
 
   constructor(private client: ClientService, private socket: WebsocketService) {
   }
@@ -38,17 +39,8 @@ export class HomeComponent implements OnInit {
   }
 
   private setStatus(status: Status) {
-    this.status = this.processText(JSON.stringify(status, null, 4));
+    this.status = status;
     this.statusDate = this.timestamp();
-  }
-
-  private processText(text: string): string {
-    return text.replace(/&/g, '&amp;')
-      .replace(/"/g, '&quot;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/'/g, '&apos;')
-      .replace(/\n/g, '<br>');
   }
 
   loadLogs(): void {
