@@ -11,14 +11,18 @@ export class AppService {
   private docker: Docker;
   private container: Container;
   private logsSubscriber: Subscriber<string>[] = [];
-  private stream: IncomingMessage;
+  private statusSubscriber: Subscriber<Status>[] = [];
+  private logStream: IncomingMessage;
+  private eventStream: IncomingMessage;
+  private readonly containerName = 'valheim';
 
   constructor() {
     this.docker = new Docker({ socketPath: '/var/run/docker.sock' });
-    this.container = this.docker.getContainer('valheim');
+    this.container = this.docker.getContainer(this.containerName);
   }
 
   getStatus(): Promise<Status> {
+    this.followContainer();
     return this.container.inspect().then(value => {
       const state = value.State;
       return {
@@ -35,10 +39,7 @@ export class AppService {
   start(): Promise<void> {
     return this.getStatus().then(status => {
       if (!status.runningOrRestarting) {
-        return this.container.start().then(val => {
-          this.followLogs();
-          return val;
-        });
+        return this.container.start();
       }
       return Promise.reject(new AppException('Already running'));
     });
@@ -95,18 +96,53 @@ export class AppService {
   }
 
   subscribeStatus(): Observable<Status> {
-    return of();
+    return new Observable(subscriber => {
+      this.followContainer();
+      this.statusSubscriber.push(subscriber);
+      subscriber.add(() => {
+        const index = this.statusSubscriber.indexOf(subscriber);
+        if (index !== -1) {
+          this.statusSubscriber.splice(index, 1);
+        }
+      });
+    });
+  }
+
+  private followContainer() {
+    if (!this.eventStream) {
+      this.docker.getEvents({ filters: { container: [this.containerName] } }).then((stream: IncomingMessage) => {
+        this.eventStream = stream;
+        stream.on('data', data => {
+          this.getStatus().then(status => {
+            if (status.runningOrRestarting) {
+              this.followLogs();
+            }
+            for (const subscriber of this.statusSubscriber) {
+              subscriber.next(status);
+            }
+          });
+        });
+        stream.on('error', err => console.error(err));
+        stream.on('close', () => this.eventStreamEnded());
+        stream.on('end', () => this.eventStreamEnded());
+      });
+    }
+  }
+
+  private eventStreamEnded(): void {
+    console.log('event stream closed');
+    this.eventStream = null;
   }
 
   private followLogs() {
-    if (!this.stream) {
+    if (!this.logStream) {
       this.container.logs({
         follow: true,
         tail: 0,
         stdout: true,
         stderr: true,
       }).then((stream: IncomingMessage) => {
-        this.stream = stream;
+        this.logStream = stream;
         stream.on('data', data => {
           const log = this.parseLog(data);
           for (const subscriber of this.logsSubscriber) {
@@ -114,14 +150,14 @@ export class AppService {
           }
         });
         stream.on('error', err => console.error(err));
-        stream.on('close', () => this.streamEnded());
-        stream.on('end', () => this.streamEnded());
+        stream.on('close', () => this.logStreamEnded());
+        stream.on('end', () => this.logStreamEnded());
       });
     }
   }
 
-  private streamEnded(): void {
+  private logStreamEnded(): void {
     console.log('log stream closed');
-    this.stream = null;
+    this.logStream = null;
   }
 }

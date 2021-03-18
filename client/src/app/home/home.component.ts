@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ClientService } from '../client.service';
 import { WebsocketService } from '../websocket.service';
+import { Status } from '../_models/Status';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadStatus();
+    this.socket.onStatus().subscribe(status => this.setStatus(status));
     this.loadLogs();
     this.socket.onLog().subscribe(log => {
       this.log = this.log + this.processText(log);
@@ -35,8 +37,12 @@ export class HomeComponent implements OnInit {
   }
 
   loadStatus(): void {
-    this.client.getStatus().subscribe(status => this.status = this.processText(JSON.stringify(status, null, 4)),
+    this.client.getStatus().subscribe(status => this.setStatus(status),
       err => this.handleError(err));
+  }
+
+  private setStatus(status: Status) {
+    this.status = this.processText(JSON.stringify(status, null, 4));
   }
 
   loadLogs(): void {
