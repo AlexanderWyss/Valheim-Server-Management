@@ -11,7 +11,9 @@ import { Status } from '../_models/Status';
 export class HomeComponent implements OnInit {
   @ViewChild('logContainer') private logContainer: ElementRef;
   status: string;
+  statusDate: string;
   log: string;
+  logDate: string;
   error: string;
   loading: boolean;
 
@@ -24,17 +26,10 @@ export class HomeComponent implements OnInit {
     this.loadLogs();
     this.socket.onLog().subscribe(log => {
       this.log = this.log + this.processText(log);
-      this.scrollToBottom();
+      this.logUpdate();
     });
   }
 
-  private scrollToBottom(): void {
-    try {
-      this.logContainer.nativeElement.scrollTop = this.logContainer.nativeElement.scrollHeight;
-    } catch (err) {
-      console.error(err);
-    }
-  }
 
   loadStatus(): void {
     this.client.getStatus().subscribe(status => this.setStatus(status),
@@ -43,13 +38,23 @@ export class HomeComponent implements OnInit {
 
   private setStatus(status: Status) {
     this.status = this.processText(JSON.stringify(status, null, 4));
+    this.statusDate = this.timestamp();
   }
 
   loadLogs(): void {
     this.client.getLogs().subscribe(log => {
       this.log = this.processText(log);
-      this.scrollToBottom();
+      this.logUpdate();
     }, err => this.handleError(err));
+  }
+
+  private logUpdate(): void {
+    try {
+      this.logDate = this.timestamp();
+      this.logContainer.nativeElement.scrollTop = this.logContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   private processText(text: string): string {
@@ -73,7 +78,6 @@ export class HomeComponent implements OnInit {
 
   private loadingDone() {
     this.loading = false;
-    this.loadStatus();
   }
 
   stop(): void {
@@ -93,6 +97,10 @@ export class HomeComponent implements OnInit {
     } else {
       this.error = error;
     }
-    this.error = new Date().toLocaleString() + ' ' + this.error;
+    this.error = this.timestamp() + ' ' + this.error;
+  }
+
+  private timestamp() {
+    return new Date().toLocaleString();
   }
 }

@@ -6,10 +6,10 @@
   <div class='error'>{{error}}</div>
 </div>
 <div class='border'>
-  <div><input type='button' value='Refresh' (click)='loadStatus()'></div>
+  <div><input type='button' value='Refresh' (click)='loadStatus()'> Last Refresh: {{statusDate}}</div>
   <div *ngIf='status' [innerHTML]='status'></div>
 </div>
 <div class='border'>
-  <div><input type='button' value='Refresh' (click)='loadLogs()'></div>
-  <div #logContainer *ngIf='log' class='log'  [innerHTML]='log'></div>
+  <div><input type='button' value='Refresh' (click)='loadLogs()'> Last Refresh: {{logDate}}</div>
+  <div #logContainer class='log'  [innerHTML]='log'></div>
 </div>

@@ -110,9 +110,11 @@ export class AppService {
 
   private followContainer() {
     if (!this.eventStream) {
+      console.log('follow container events');
       this.docker.getEvents({ filters: { container: [this.containerName] } }).then((stream: IncomingMessage) => {
         this.eventStream = stream;
         stream.on('data', data => {
+          console.log('received event');
           this.getStatus().then(status => {
             if (status.runningOrRestarting) {
               this.followLogs();
@@ -136,6 +138,7 @@ export class AppService {
 
   private followLogs() {
     if (!this.logStream) {
+      console.log('follow logs');
       this.container.logs({
         follow: true,
         tail: 0,
