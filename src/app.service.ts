@@ -5,7 +5,7 @@ import { Status } from './_models/Status';
 import { AppException } from './AppException';
 import { Observable,  Subscriber } from 'rxjs';
 import { IncomingMessage } from 'http';
-import * as AnsiConverter from 'ansi-to-html'
+import AnsiConverter = require('ansi-to-html');
 
 @Injectable()
 export class AppService {
