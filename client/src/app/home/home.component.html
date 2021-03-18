@@ -6,7 +6,7 @@
       <button mat-stroked-button color='primary' (click)='start()' [disabled]='loading'>Start</button>
       <button mat-stroked-button color='warn' (click)='stop()' [disabled]='loading'>Stop</button>
     </div>
-    <div *ngIf='loading'>In Progress...</div>
+      <div><mat-spinner *ngIf='loading' diameter='34'></mat-spinner></div>
     <div class='error'>{{error}}</div>
   </div>
   <mat-divider></mat-divider>
@@ -27,6 +27,6 @@
       </button>
       <span class='timestamp'>{{logDate}}</span>
     </div>
-    <div #logContainer class='log' [innerHTML]='log'></div>
+    <div #logContainer class='log' [innerHTML]='log | safeHtml'></div>
   </div>
 </div>

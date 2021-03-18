@@ -12,13 +12,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SafeHtmlPipe } from './safe-html.pipe';
 
 const config: SocketIoConfig = {url: getUrl(), options: {}};
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,8 @@ const config: SocketIoConfig = {url: getUrl(), options: {}};
     HttpClientModule,
     MatButtonModule,
     MatIconModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
