@@ -79,7 +79,7 @@ export class AppService {
     return new Observable(subscriber => {
       this.followLogs();
       this.logsSubscriber.push(subscriber);
-      console.log(this.logsSubscriber);
+      console.log(this.logsSubscriber)
       subscriber.add(() => {
         console.log('teardown');
         const index = this.logsSubscriber.indexOf(subscriber);
