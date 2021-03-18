@@ -3,9 +3,9 @@ import * as Docker from 'dockerode';
 import { Container } from 'dockerode';
 import { Status } from './_models/Status';
 import { AppException } from './AppException';
-import { Observable,  Subscriber } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 import { IncomingMessage } from 'http';
-import AnsiConverter = require('ansi-to-html');
+import * as AnsiConverter from 'ansi-to-html';
 
 @Injectable()
 export class AppService {
@@ -82,8 +82,9 @@ export class AppService {
     }
     return log;
   }
+
   private processText(text: string): string {
-    return this.ansiConverter.convert(text.replace(/&/g, '&amp;')
+    return this.ansiConverter.toHtml(text.replace(/&/g, '&amp;')
       .replace(/"/g, '&quot;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')

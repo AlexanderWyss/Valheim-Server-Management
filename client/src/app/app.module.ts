@@ -9,6 +9,9 @@ import { FormsModule } from '@angular/forms';
 import { getUrl } from './util';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
 
 const config: SocketIoConfig = {url: getUrl(), options: {}};
 
@@ -23,7 +26,10 @@ const config: SocketIoConfig = {url: getUrl(), options: {}};
     BrowserAnimationsModule,
     SocketIoModule.forRoot(config),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

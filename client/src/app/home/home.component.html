@@ -1,15 +1,32 @@
-<h2>Valheim Server</h2>
-<div class='border'>
-  <input type='button' value='Start' (click)='start()' [disabled]='loading'>
-  <input type='button' value='Stop' (click)='stop()' [disabled]='loading'>
-  <div *ngIf='loading'>In Progress...</div>
-  <div class='error'>{{error}}</div>
-</div>
-<div class='border'>
-  <div><input type='button' value='Refresh' (click)='loadStatus()'> Last Refresh: {{statusDate}}</div>
-  <div *ngIf='status' [innerHTML]='status'></div>
-</div>
-<div class='border'>
-  <div><input type='button' value='Refresh' (click)='loadLogs()'> Last Refresh: {{logDate}}</div>
-  <div #logContainer class='log'  [innerHTML]='log'></div>
+<div class='container'>
+  <h2>Valheim Server</h2>
+  <mat-divider></mat-divider>
+  <div class='group'>
+    <div>
+      <button mat-stroked-button color='primary' (click)='start()' [disabled]='loading'>Start</button>
+      <button mat-stroked-button color='warn' (click)='stop()' [disabled]='loading'>Stop</button>
+    </div>
+    <div *ngIf='loading'>In Progress...</div>
+    <div class='error'>{{error}}</div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class='group'>
+    <div>
+      <button mat-icon-button (click)='loadStatus()'>
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <span class='timestamp'>{{statusDate}}</span>
+    </div>
+    <div *ngIf='status' [innerHTML]='status'></div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class='group'>
+    <div>
+      <button mat-icon-button (click)='loadLogs()'>
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <span class='timestamp'>{{logDate}}</span>
+    </div>
+    <div #logContainer class='log' [innerHTML]='log'></div>
+  </div>
 </div>

@@ -98,10 +98,12 @@ export class HomeComponent implements OnInit {
     console.error(error);
     if (error.error && error.error.message) {
       this.error = error.error.message;
+    } else if (error.message) {
+      this.error = error.message;
     } else {
       this.error = error;
     }
-    this.error = this.timestamp() + ' ' + this.error;
+    this.error = this.timestamp() + ': ' + this.error;
   }
 
   private timestamp() {

@@ -1,18 +1,37 @@
-.border {
-  border: 1px solid black;
-  margin: 5px;
+.container {
   padding: 5px;
-}
+  max-height: 100%;
 
-.error {
-  color: red;
-}
+  .error {
+    color: red;
+  }
 
-.log {
-  max-height: 50vh;
-  overflow: scroll;
-}
+  .log {
+    overflow: scroll;
+  }
 
-h2 {
-  margin: 10px;
+  h2 {
+    padding: 5px;
+    margin-bottom: 0;
+  }
+
+  mat-divider {
+    margin: 5px 0;
+  }
+
+  .group {
+    padding: 5px;
+    > div {
+      margin-bottom: 5px;
+    }
+  }
+
+  button {
+    margin-right: 5px;
+  }
+
+  .timestamp {
+    font-size: 9px;
+    color: grey;
+  }
 }
