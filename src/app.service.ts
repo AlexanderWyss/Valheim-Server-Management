@@ -15,7 +15,7 @@ export class AppService {
 
   constructor() {
     this.docker = new Docker({ socketPath: '/var/run/docker.sock' });
-    this.container = this.docker.getContainer('valheim');
+    this.container = this.docker.getContainer('web-starter');
   }
 
   getStatus(): Promise<Status> {
@@ -79,7 +79,6 @@ export class AppService {
     return new Observable(subscriber => {
       this.followLogs();
       this.logsSubscriber.push(subscriber);
-      console.log(this.logsSubscriber)
       subscriber.add(() => {
         console.log('teardown');
         const index = this.logsSubscriber.indexOf(subscriber);
@@ -104,10 +103,10 @@ export class AppService {
       }).then((stream: IncomingMessage) => {
         this.stream = stream;
         stream.on('data', data => {
-          console.log(data);
           const log = this.parseLog(data);
           console.log(log);
           for (const subscriber of this.logsSubscriber) {
+            console.log(subscriber)
             subscriber.next(log);
           }
         })
