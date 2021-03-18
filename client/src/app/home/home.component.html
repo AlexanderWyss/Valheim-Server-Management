@@ -26,6 +26,7 @@
         <mat-icon>refresh</mat-icon>
       </button>
       <span class='timestamp'>{{logDate}}</span>
+      <mat-checkbox [(ngModel)]='autoScroll'>Auto scroll</mat-checkbox>
     </div>
     <div #logContainer class='log' [innerHTML]='log | safeHtml'></div>
   </div>

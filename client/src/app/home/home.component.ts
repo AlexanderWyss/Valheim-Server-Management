@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   logDate: string;
   error: string;
   loading: boolean;
+  autoScroll: boolean;
 
   constructor(private client: ClientService, private socket: WebsocketService) {
   }
@@ -59,7 +60,9 @@ export class HomeComponent implements OnInit {
 
   private logUpdate(): void {
     this.logDate = this.timestamp();
-    setTimeout(() => this.scrollLogToBottom(), 0);
+    if (this.autoScroll) {
+      setTimeout(() => this.scrollLogToBottom(), 0);
+    }
   }
 
   private scrollLogToBottom() {
