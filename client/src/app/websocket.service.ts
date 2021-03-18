@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,11 +8,9 @@ import { Socket } from 'ngx-socket-io';
 export class WebsocketService {
 
   constructor(private socket: Socket) {
-    this.socket.on('connect', () => {
-      console.log('connect');
-      this.socket.fromEvent('log').subscribe((val: any) => {
-        console.log(val);
-      });
-    });
+  }
+
+  public onLog(): Observable<string> {
+    return this.socket.fromEvent('log');
   }
 }

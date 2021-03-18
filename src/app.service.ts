@@ -58,7 +58,10 @@ export class AppService {
       tail: 200,
       stdout: true,
       stderr: true,
-    }).then(value => this.parseLog(value as any as Buffer));
+    }).then(value => {
+      this.followLogs();
+      return this.parseLog(value as any as Buffer);
+    });
   }
 
   private parseLog(buffer: Buffer): string {
@@ -83,7 +86,6 @@ export class AppService {
       this.followLogs();
       this.logsSubscriber.push(subscriber);
       subscriber.add(() => {
-        console.log('teardown');
         const index = this.logsSubscriber.indexOf(subscriber);
         if (index !== -1) {
           this.logsSubscriber.splice(index, 1);
@@ -98,7 +100,6 @@ export class AppService {
 
   private followLogs() {
     if (!this.stream) {
-      console.log('follow logs');
       this.container.logs({
         follow: true,
         tail: 0,
@@ -108,22 +109,19 @@ export class AppService {
         this.stream = stream;
         stream.on('data', data => {
           const log = this.parseLog(data);
-          console.log(log);
           for (const subscriber of this.logsSubscriber) {
-            console.log(subscriber);
             subscriber.next(log);
           }
         });
         stream.on('error', err => console.error(err));
-        stream.on('close', () => {
-          console.log('close')
-          this.stream = null;
-        });
-        stream.on('end',  () => {
-          console.log('end')
-          this.stream = null;
-        });
+        stream.on('close', () => this.streamEnded());
+        stream.on('end', () => this.streamEnded());
       });
     }
+  }
+
+  private streamEnded(): void {
+    console.log('log stream closed');
+    this.stream = null;
   }
 }

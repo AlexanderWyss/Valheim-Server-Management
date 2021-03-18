@@ -19,10 +19,7 @@ export class AppGateway implements OnGatewayInit {
   }
 
   afterInit(): any {
-    this.logsSubscription = this.service.subscribeLogs().subscribe(value => {
-      console.log('subscriber: ' + value);
-      this.server.emit('log', value);
-    });
+    this.logsSubscription = this.service.subscribeLogs().subscribe(value => this.server.emit('log', value));
     this.statusSubscription = this.service.subscribeStatus().subscribe(value => this.server.emit('status', value));
   }
 }
