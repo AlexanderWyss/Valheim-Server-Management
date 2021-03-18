@@ -11,5 +11,5 @@
 </div>
 <div class='border'>
   <div><input type='button' value='Refresh' (click)='loadLogs()'></div>
-  <div *ngIf='log' class='log'  [innerHTML]='log'></div>
+  <div #logContainer *ngIf='log' class='log'  [innerHTML]='log'></div>
 </div>
