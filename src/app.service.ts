@@ -15,7 +15,7 @@ export class AppService {
 
   constructor() {
     this.docker = new Docker({ socketPath: '/var/run/docker.sock' });
-    this.container = this.docker.getContainer('web-starter');
+    this.container = this.docker.getContainer('valheim');
   }
 
   getStatus(): Promise<Status> {
@@ -35,7 +35,10 @@ export class AppService {
   start(): Promise<void> {
     return this.getStatus().then(status => {
       if (!status.runningOrRestarting) {
-        return this.container.start();
+        return this.container.start().then(val => {
+          this.followLogs();
+          return val;
+        });
       }
       return Promise.reject(new AppException('Already running'));
     });
@@ -95,6 +98,7 @@ export class AppService {
 
   private followLogs() {
     if (!this.stream) {
+      console.log('follow logs');
       this.container.logs({
         follow: true,
         tail: 0,
@@ -106,10 +110,19 @@ export class AppService {
           const log = this.parseLog(data);
           console.log(log);
           for (const subscriber of this.logsSubscriber) {
-            console.log(subscriber)
+            console.log(subscriber);
             subscriber.next(log);
           }
-        })
+        });
+        stream.on('error', err => console.error(err));
+        stream.on('close', () => {
+          console.log('close')
+          this.stream = null;
+        });
+        stream.on('end',  () => {
+          console.log('end')
+          this.stream = null;
+        });
       });
     }
   }
