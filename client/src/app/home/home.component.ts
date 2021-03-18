@@ -49,8 +49,12 @@ export class HomeComponent implements OnInit {
   }
 
   private logUpdate(): void {
+    this.logDate = this.timestamp();
+    setTimeout(() => this.scrollLogToBottom(), 0);
+  }
+
+  private scrollLogToBottom() {
     try {
-      this.logDate = this.timestamp();
       this.logContainer.nativeElement.scrollTop = this.logContainer.nativeElement.scrollHeight;
     } catch (err) {
       console.error(err);
