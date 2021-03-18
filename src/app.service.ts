@@ -3,8 +3,9 @@ import * as Docker from 'dockerode';
 import { Container } from 'dockerode';
 import { Status } from './_models/Status';
 import { AppException } from './AppException';
-import { Observable, of, Subscriber } from 'rxjs';
+import { Observable,  Subscriber } from 'rxjs';
 import { IncomingMessage } from 'http';
+import * as AnsiConverter from 'ansi-to-html'
 
 @Injectable()
 export class AppService {
@@ -15,6 +16,7 @@ export class AppService {
   private logStream: IncomingMessage;
   private eventStream: IncomingMessage;
   private readonly containerName = 'valheim';
+  private readonly ansiConverter = new AnsiConverter();
 
   constructor() {
     this.docker = new Docker({ socketPath: '/var/run/docker.sock' });
@@ -70,17 +72,24 @@ export class AppService {
     let offset = 0;
     while (offset < buffer.length) {
       if (buffer.readInt8(offset) == 2) {
-        log = log + 'ERROR: ';
+        log = log + '<span style="color:#F00">[ERROR] </span>';
       }
       const length = buffer.readUInt32BE(offset + 4);
-      const headerOffset = offset + 8;
-      const end = headerOffset + length;
-      log = log + buffer.toString('utf-8', headerOffset, end);
+      offset += 8;
+      const end = offset + length;
+      log = log + this.processText(buffer.toString('utf-8', offset, end));
       offset = end;
     }
-    return log.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+    return log;
   }
-
+  private processText(text: string): string {
+    return this.ansiConverter.convert(text.replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/'/g, '&apos;')
+      .replace(/\n/g, '<br>'));
+  }
 
   subscribeLogs(): Observable<string> {
     return new Observable(subscriber => {

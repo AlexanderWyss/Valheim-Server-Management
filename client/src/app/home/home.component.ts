@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
     this.socket.onStatus().subscribe(status => this.setStatus(status));
     this.loadLogs();
     this.socket.onLog().subscribe(log => {
-      this.log = this.log + this.processText(log);
+      this.log = this.log + log;
       this.logUpdate();
     });
   }
@@ -41,9 +41,18 @@ export class HomeComponent implements OnInit {
     this.statusDate = this.timestamp();
   }
 
+  private processText(text: string): string {
+    return text.replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/'/g, '&apos;')
+      .replace(/\n/g, '<br>');
+  }
+
   loadLogs(): void {
     this.client.getLogs().subscribe(log => {
-      this.log = this.processText(log);
+      this.log = log;
       this.logUpdate();
     }, err => this.handleError(err));
   }
@@ -59,15 +68,6 @@ export class HomeComponent implements OnInit {
     } catch (err) {
       console.error(err);
     }
-  }
-
-  private processText(text: string): string {
-    return text.replace(/&/g, '&amp;')
-      .replace(/"/g, '&quot;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/'/g, '&apos;')
-      .replace(/\n/g, '<br>');
   }
 
   start(): void {
