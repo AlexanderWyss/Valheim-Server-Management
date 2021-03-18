@@ -19,7 +19,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.loadStatus();
     this.loadLogs();
-    this.socket.onLog().subscribe(log => this.log += log);
+    this.socket.onLog().subscribe(log => {
+      console.log(log);
+      this.log = this.log + log;
+    });
   }
 
   loadStatus(): void {
