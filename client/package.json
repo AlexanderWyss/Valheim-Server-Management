@@ -22,10 +22,10 @@
     "@angular/platform-browser": "~11.0.5",
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/router": "~11.0.5",
+    "ngx-socket-io": "github:AlexanderWyss/ngx-socket-io",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.3",
-    "zone.js": "~0.11.3",
-    "ngx-socket-io": "github:AlexanderWyss/ngx-socket-io"
+    "zone.js": "~0.11.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1100.5",
