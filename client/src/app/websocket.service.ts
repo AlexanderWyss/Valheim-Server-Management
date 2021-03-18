@@ -8,6 +8,11 @@ import { Observable } from 'rxjs';
 export class WebsocketService {
 
   constructor(private socket: Socket) {
+    console.log('try connect');
+    this.socket.on('connect', () => {
+      console.log('connected');
+      this.socket.emit('log');
+    });
     this.socket.connect();
   }
 

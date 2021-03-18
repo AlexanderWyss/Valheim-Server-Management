@@ -9,7 +9,7 @@
   <div><input type='button' value='Refresh' (click)='loadStatus()'></div>
   <div *ngIf='status' [innerHTML]='status'></div>
 </div>
-<div class='border'>
+<div #logDiv class='border log'>
   <div><input type='button' value='Refresh' (click)='loadLogs()'></div>
   <div *ngIf='log' [innerHTML]='log'></div>
 </div>

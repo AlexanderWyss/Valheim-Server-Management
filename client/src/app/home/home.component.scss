@@ -3,8 +3,14 @@
   margin: 5px;
   padding: 5px;
 }
+
 .error {
   color: red;
+}
+
+.log {
+  max-height: 50vh;
+  overflow: scroll;
 }
 
 h2 {

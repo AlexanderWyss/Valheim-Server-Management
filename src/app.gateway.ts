@@ -1,7 +1,7 @@
 import {
   WebSocketGateway,
   WebSocketServer,
-  OnGatewayInit,
+  OnGatewayInit, SubscribeMessage, MessageBody,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { AppService } from './app.service';
@@ -16,6 +16,11 @@ export class AppGateway implements OnGatewayInit {
   statusSubscription: Subscription;
 
   constructor(private readonly service: AppService) {
+  }
+
+  @SubscribeMessage('log')
+  handleMessage(): void {
+    console.log('client connect log');
   }
 
   afterInit(): any {
