@@ -8,6 +8,7 @@ export class WebsocketService {
 
   constructor(private socket: Socket) {
     this.socket.on('connect', () => {
+      console.log('connect');
       this.socket.fromEvent('log').subscribe((val: any) => {
         console.log(val);
       });
