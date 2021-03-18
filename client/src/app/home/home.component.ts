@@ -40,7 +40,10 @@ export class HomeComponent implements OnInit {
   }
 
   loadLogs(): void {
-    this.client.getLogs().subscribe(log => this.log = this.processText(log), err => this.handleError(err));
+    this.client.getLogs().subscribe(log => {
+      this.log = this.processText(log);
+      this.scrollToBottom();
+    }, err => this.handleError(err));
   }
 
   private processText(text: string): string {
