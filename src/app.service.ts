@@ -3,13 +3,15 @@ import * as Docker from 'dockerode';
 import { Container } from 'dockerode';
 import { Status } from './_models/Status';
 import { AppException } from './AppException';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscriber } from 'rxjs';
 import { IncomingMessage } from 'http';
 
 @Injectable()
 export class AppService {
   private docker: Docker;
   private container: Container;
+  private logsSubscriber: Subscriber<string>[] = [];
+  private stream: IncomingMessage;
 
   constructor() {
     this.docker = new Docker({ socketPath: '/var/run/docker.sock' });
@@ -72,26 +74,39 @@ export class AppService {
     return log.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
   }
 
+
   subscribeLogs(): Observable<string> {
-    this.container.logs({
-      follow: true,
-      tail: 0,
-      stdout: true,
-      stderr: true,
-    }).then((stream: IncomingMessage) => {
-      stream.on('data', data => {
-        console.log(data);
-        try {
-          console.log(this.parseLog(data));
-        } catch (e) {
-          console.error(e);
+    return new Observable(subscriber => {
+      this.followLogs();
+      this.logsSubscriber.push(subscriber);
+      subscriber.add(() => {
+        const index = this.logsSubscriber.indexOf(subscriber);
+        if (index !== -1) {
+          this.logsSubscriber.splice(index, 1);
         }
       });
     });
-    return of();
   }
 
   subscribeStatus(): Observable<Status> {
     return of();
+  }
+
+  private followLogs() {
+    if (!this.stream) {
+      this.container.logs({
+        follow: true,
+        tail: 0,
+        stdout: true,
+        stderr: true,
+      }).then((stream: IncomingMessage) => {
+        stream.on('data', data => {
+          const log = this.parseLog(data);
+          for (const subscriber of this.logsSubscriber) {
+            subscriber.next(log);
+          }
+        })
+      });
+    }
   }
 }

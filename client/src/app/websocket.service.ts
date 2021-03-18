@@ -8,10 +8,9 @@ export class WebsocketService {
 
   constructor(private socket: Socket) {
     this.socket.on('connect', () => {
-      this.socket.fromEvent('callback').subscribe((val: any) => {
+      this.socket.fromEvent('log').subscribe((val: any) => {
         console.log(val);
       });
-      this.socket.emit('message');
     });
   }
 }
