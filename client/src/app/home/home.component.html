@@ -3,8 +3,8 @@
   <mat-divider></mat-divider>
   <div class='group'>
     <div>
-      <button mat-stroked-button color='primary' (click)='start()' [disabled]='loading'>Start</button>
-      <button mat-stroked-button color='warn' (click)='stop()' [disabled]='loading'>Stop</button>
+      <button mat-stroked-button color='primary' (click)='start()' [disabled]='loading || status?.runningOrRestarting'>Start</button>
+      <button mat-stroked-button color='warn' (click)='stop()' [disabled]='loading || !status?.runningOrRestarting'>Stop</button>
     </div>
     <div>
       <mat-spinner *ngIf='loading' diameter='34'></mat-spinner>
