@@ -26,21 +26,24 @@
     }
   }
 
-  button {
-    margin-right: 5px;
+  .header {
+    > * {
+      margin-right: 5px;
+    }
   }
 
   .timestamp {
     font-size: 12px;
     color: grey;
-    margin-right: 5px;
   }
 
   .status-container {
     padding-left: 5px;
+
     div {
       margin-bottom: 3px;
       display: flex;
+
       > div {
         min-width: 5rem;
       }

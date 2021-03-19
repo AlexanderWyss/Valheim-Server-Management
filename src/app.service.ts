@@ -56,9 +56,9 @@ export class AppService {
     });
   }
 
-  getLogs(): Promise<string> {
+  getLogs(lines: number): Promise<string> {
     return this.container.logs({
-      tail: 200,
+      tail: lines,
       stdout: true,
       stderr: true,
     }).then(value => {

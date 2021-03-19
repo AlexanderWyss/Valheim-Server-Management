@@ -17,6 +17,8 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 const config: SocketIoConfig = {url: getUrl(), options: {}};
 
@@ -39,7 +41,9 @@ const config: SocketIoConfig = {url: getUrl(), options: {}};
     MatProgressSpinnerModule,
     MatCheckboxModule,
     MatSlideToggleModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

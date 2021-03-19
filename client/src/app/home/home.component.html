@@ -2,9 +2,13 @@
   <h2>Valheim Server</h2>
   <mat-divider></mat-divider>
   <div class='group'>
-    <div>
-      <button mat-stroked-button color='primary' (click)='start()' [disabled]='loading || status?.runningOrRestarting'>Start</button>
-      <button mat-stroked-button color='warn' (click)='stop()' [disabled]='loading || !status?.runningOrRestarting'>Stop</button>
+    <div class='header'>
+      <button mat-stroked-button color='primary' (click)='start()' [disabled]='loading || status?.runningOrRestarting'>
+        Start
+      </button>
+      <button mat-stroked-button color='warn' (click)='stop()' [disabled]='loading || !status?.runningOrRestarting'>
+        Stop
+      </button>
     </div>
     <div>
       <mat-spinner *ngIf='loading' diameter='34'></mat-spinner>
@@ -12,7 +16,7 @@
   </div>
   <mat-divider></mat-divider>
   <div class='group'>
-    <div>
+    <div class='header'>
       <button mat-icon-button (click)='loadStatus()'>
         <mat-icon>refresh</mat-icon>
       </button>
@@ -20,29 +24,38 @@
     </div>
     <div *ngIf='status' class='status-container'>
       <div>
-        <div>Status</div><div>{{status.status}}</div>
+        <div>Status</div>
+        <div>{{status.status}}</div>
       </div>
       <div>
-        <div>Exit code</div><div>{{status.exitCode}}</div>
+        <div>Exit code</div>
+        <div>{{status.exitCode}}</div>
       </div>
       <div>
-        <div>Error</div><div>{{status.error}}</div>
+        <div>Error</div>
+        <div>{{status.error}}</div>
       </div>
       <div>
-        <div>Started at</div><div>{{status.startedAt | date:dateFormat}}</div>
+        <div>Started at</div>
+        <div>{{status.startedAt | date:dateFormat}}</div>
       </div>
       <div>
-        <div>Stopped at</div><div>{{status.finishedAt | date:dateFormat}}</div>
+        <div>Stopped at</div>
+        <div>{{status.finishedAt | date:dateFormat}}</div>
       </div>
     </div>
   </div>
   <mat-divider></mat-divider>
   <div class='group'>
-    <div>
+    <div class='header'>
       <button mat-icon-button (click)='loadLogs()'>
         <mat-icon>refresh</mat-icon>
       </button>
       <span class='timestamp'>{{logDate}}</span>
+      <mat-form-field>
+        <mat-label>Lines</mat-label>
+        <input matInput type='number' [(ngModel)]='lines' (keydown.enter)='loadLogs()'>
+      </mat-form-field>
       <mat-slide-toggle [(ngModel)]='autoScroll'>Auto scroll</mat-slide-toggle>
     </div>
     <div #logContainer class='log' [innerHTML]='log | safeHtml'></div>

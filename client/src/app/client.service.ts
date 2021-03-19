@@ -15,18 +15,18 @@ export class ClientService {
   }
 
   getStatus(): Observable<Status> {
-    return this.http.get<Status>(this.URL + '/status');
+    return this.http.get<Status>(`${this.URL}/status`);
   }
 
   start(): Observable<any> {
-    return this.http.post<any>(this.URL + '/start', null);
+    return this.http.post<any>(`${this.URL}/start`, null);
   }
 
   stop(): Observable<any> {
-    return this.http.post<any>(this.URL + '/stop', null);
+    return this.http.post<any>(`${this.URL}/stop`, null);
   }
 
-  getLogs(): Observable<string> {
-    return this.http.get(this.URL + '/logs', { responseType: 'text' });
+  getLogs(lines: number): Observable<string> {
+    return this.http.get(`${this.URL}/logs/${lines}`, { responseType: 'text' });
   }
 }
