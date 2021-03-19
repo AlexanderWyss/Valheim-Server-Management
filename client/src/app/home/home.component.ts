@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   loading: boolean;
   autoScroll = true;
   dateFormat = 'dd.MM.yyyy HH:mm:ss.SSS';
-  lines = 100;
+  lines = 200;
 
   constructor(private client: ClientService, private socket: WebsocketService, private snackBar: MatSnackBar) {
   }
