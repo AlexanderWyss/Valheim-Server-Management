@@ -15,7 +15,7 @@ export class AppService {
   private statusSubscriber: Subscriber<Status>[] = [];
   private logStream: IncomingMessage;
   private eventStream: IncomingMessage;
-  private readonly containerName = 'valheim';
+  private readonly containerName = process.env.CONTAINER;
   private readonly ansiConverter = new AnsiConverter();
 
   constructor() {
